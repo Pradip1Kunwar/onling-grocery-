@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import signup from '../assest/signup.jpg';
+import Singup from '../assest/Singup.jpg';
 import { BiShow, BiHide} from "react-icons/bi";
 import { Link } from 'react-router-dom';
+import {imagetobase64} from '../utility/imagetobase64';
 
 const Signup = () => {
   const [showpassword,setShowpassword] = useState(false)
@@ -29,6 +30,18 @@ const Signup = () => {
       }
     })
   }
+const handleuploadprofileimage = async(e) =>{
+  const data = await imagetobase64 (e.target.files[0])
+  console.log(data)
+
+setData((preve)=>{
+  return{
+    preve,
+    image: data
+  }
+})
+}
+
   const handelSubmit= (e) =>{
     e.preventDefault()
     const {firstName,email,password,confirmpassword} = data
@@ -47,11 +60,17 @@ const Signup = () => {
 
   return (
      <div className='p-3 md:p-4'>
-        <div className='w-full max-w-sm bg-white m-auto flex flex-col p-4' > 
-            <div className='w-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto'>
-                <img src={signup} className='w-full'/>
+        <div className='w-full max-w-sm bg-white m-auto flex flex-col p-4 ' > 
+            <div className='h-full w-20 overflow-hidden rounded-full drop-shadow-md shadow-md m-auto relative'>
+                <img src={data.image ? data.image: Singup} className='w-full h-full'/>
+                <label htmlFor='profileImage'>
+                <div className="absolute bottom-0 h-1/3 bg-slate-500 w-full text-center flex items-center justify-center">
+                <p className="text-white font-bold cursor-pointer">Upload</p>
             </div>
-            <form className='w-full py-3 flex flex-col' onSubmit={handelSubmit}>
+            <input type={"file"} id='profileImage' accept='image/*' className="hidden" onChange={handleuploadprofileimage}/>
+            </label>
+            </div>
+             <form className='w-full py-3 flex flex-col' onSubmit={handelSubmit}>
               <label htmlFor='firstName'>First Name</label>
               <input type={'text'} id='firstName' name='firstName' className='mt-1 mb-2 w-full bg-slate-200 px-2 py-1 rounded focus-within:outline-blue-300' value={data.firstName} onChange={handleOnChange}/>
                 
