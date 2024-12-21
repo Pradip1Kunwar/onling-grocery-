@@ -12,7 +12,8 @@ const Signup = () => {
     lastName :'',
     email :'',
     password:'',
-    confirmpassword:''
+    confirmpassword:'',
+    image:''
   });
   console.log(data);
   const handleshowpassword = () =>{
@@ -41,13 +42,25 @@ setData((preve)=>{
   }
 })
 }
-
-  const handelSubmit= (e) =>{
+console.log(process.env.REACT_APP_SERVER_DOMIN)
+  const handelSubmit= async(e) =>{
     e.preventDefault()
     const {firstName,email,password,confirmpassword} = data
     if(firstName && email && password && confirmpassword){
       if(password === confirmpassword){
-        alert("successfull")
+       
+           const fetchData = await fetch (`${process.env.REACT_APP_SERVER_DOMIN}/Signup`,{
+            method : "post",
+            headers :{
+              "content-type" : "application/json"
+            },
+            body : JSON.stringify(data)
+           })
+           const dataRes = await fetchData.json()
+           console.log(dataRes)
+
+
+           alert("successfull")
       }
       else{
         alert("password and conformpassword not equal")
